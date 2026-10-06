@@ -138,7 +138,7 @@ export default async function AdminPage() {
           totalCapacity={totalCapacity}
         />
 
-        {/* Popular events */}
+        
         {popular.length > 0 && (
           <section className="mt-10">
             <h2 className="font-display text-base font-semibold text-white">Popular events</h2>

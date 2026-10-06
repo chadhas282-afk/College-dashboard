@@ -20,7 +20,6 @@ Guidelines:
 - If a tool returns an error (event full, already registered), explain kindly and suggest alternatives with list_events.
 - Never invent events, dates, or seat counts — always use tools.`;
 
-// Serialize parallel duplicate registrations for the same email+event within one turn.
 const inFlight = new Map<string, Promise<RegisterStudentResult>>();
 
 async function fetchEventsWithSeats(category?: string, date?: string) {
@@ -77,8 +76,6 @@ export async function POST(req: Request) {
     );
   }
 
-  // Primary provider per spec: gpt-4o-mini. Falls back to the free Gemini tier
-  // when no OpenAI key is present.
   const model = hasOpenAI
     ? openai(process.env.OPENAI_MODEL || 'gpt-4o-mini')
     : google(process.env.GOOGLE_AI_MODEL || 'gemini-2.5-flash');
@@ -157,7 +154,6 @@ export async function POST(req: Request) {
           event_id: z.string().uuid().describe('The event UUID'),
         }),
         execute: async ({ student_email, event_id }) => {
-          // Dedupe concurrent identical registrations in this request.
           const key = `${student_email}:${event_id}`;
           let promise = inFlight.get(key);
           if (!promise) {
@@ -177,7 +173,7 @@ export async function POST(req: Request) {
         },
       }),
     },
-    maxSteps: 5, // allow multi-step tool chains (list → availability → register)
+    maxSteps: 5,
   });
 
   return result.toDataStreamResponse();

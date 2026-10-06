@@ -17,7 +17,6 @@ const config: Config = {
           800: '#3730a3',
           900: '#312e81',
         },
-        // Neon accents — used for glows, gradients and small highlights only.
         neon: {
           cyan: '#22d3ee',
           blue: '#3b82f6',
@@ -27,7 +26,6 @@ const config: Config = {
           amber: '#fbbf24',
           violet: '#a78bfa',
         },
-        // Dark surface ramp for the retro-futurist shell.
         void: {
           950: '#04060f',
           900: '#070b1a',

@@ -1,9 +1,5 @@
 import { createClient } from '@/lib/supabase/server';
 
-/**
- * The single account allowed into /admin. Override with ADMIN_EMAIL in
- * .env.local so the address isn't hardcoded in the repo.
- */
 export const ADMIN_EMAIL = (process.env.ADMIN_EMAIL || 'admin@college.edu').toLowerCase();
 
 export function isAdminEmail(email?: string | null): boolean {

@@ -16,7 +16,6 @@ export default function EventFilters({
   const [q, setQ] = useState(initialQuery);
   const [category, setCategory] = useState(initialCategory);
 
-  // Debounced URL sync — keeps filters shareable/bookmarkable.
   useEffect(() => {
     const t = setTimeout(() => {
       const params = new URLSearchParams(searchParams.toString());

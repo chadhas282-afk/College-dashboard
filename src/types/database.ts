@@ -1,6 +1,5 @@
 export type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[];
 
-/** Minimal hand-written Database type matching supabase/migrations/*.sql. */
 export interface Database {
   public: {
     Tables: {
@@ -162,8 +161,6 @@ export const CATEGORY_STYLES: Record<EventCategory, string> = {
   Hackathon: 'bg-fuchsia-400/15 text-fuchsia-200 ring-fuchsia-400/35',
 };
 
-/** Gradient + glyph per category, used for card banners. */
-/** Neon gradient + glyph per category, used for card and detail banners. */
 export const CATEGORY_ACCENTS: Record<
   EventCategory,
   { accent: string; glow: string; icon: string; ring: string }
@@ -199,7 +196,6 @@ export function formatDate(iso: string): string {
   });
 }
 
-/** Convert a JS Date to a "YYYY-MM-DDTHH:mm" string for <input type="datetime-local">. */
 export function toDatetimeLocal(date: Date): string {
   const pad = (n: number) => String(n).padStart(2, '0');
   return (

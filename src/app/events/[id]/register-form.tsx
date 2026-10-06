@@ -42,9 +42,6 @@ export default function RegisterForm({
       if (res.ok && data.success) {
         setStatus('success');
         setCalendarSkipped(Boolean(data.calendar?.skipped));
-        // `skipped` means calendar credentials aren't configured on this
-        // deployment — the registration itself succeeded, so don't show the
-        // student a server-side config detail as if something went wrong.
         if (data.calendar?.created) {
           setMessage('Registered. Check your email for the Google Calendar invite.');
         } else if (data.calendar?.error && !data.calendar?.skipped) {

@@ -23,7 +23,6 @@ export async function middleware(request: NextRequest) {
     }
   );
 
-  // IMPORTANT: do not run code between createServerClient and getSession().
   const {
     data: { session },
   } = await supabase.auth.getSession();

@@ -37,7 +37,7 @@ export default function EventCard({ event }: { event: EventWithSeats }) {
                   transition duration-300 hover:-translate-y-1.5 hover:border-white/20
                   ${style.ring}`}
     >
-      {/* Neon banner — doubles as the category signal */}
+      
       <Link
         href={`/events/${event.id}`}
         className={`relative flex h-32 items-center justify-center overflow-hidden ${style.glow}`}
@@ -53,7 +53,7 @@ export default function EventCard({ event }: { event: EventWithSeats }) {
           }}
           aria-hidden
         />
-        {/* Orbiting ring */}
+        
         <div
           className="absolute h-24 w-24 rounded-full border border-white/25 animate-spin-slow"
           aria-hidden
@@ -80,7 +80,7 @@ export default function EventCard({ event }: { event: EventWithSeats }) {
 
       <div className="flex flex-1 flex-col p-5">
         <div className="flex items-start gap-3">
-          {/* Date block */}
+          
           <div
             className="flex w-12 shrink-0 flex-col items-center rounded-xl border border-cyan-400/25
                        bg-cyan-400/10 py-1.5 backdrop-blur"

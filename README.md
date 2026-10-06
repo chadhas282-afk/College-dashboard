@@ -92,6 +92,53 @@ npm run dev
 
 ---
 
+## 6. Deploy to Vercel
+
+The app is a standard Next.js App Router project, so Vercel needs no custom build settings.
+
+### First deploy
+
+```bash
+npm i -g vercel
+vercel            # preview deploy
+vercel --prod     # production
+```
+
+Or import the repo at [vercel.com/new](https://vercel.com/new). Vercel auto-detects Next.js; leave the build command as `next build` and the output as the default.
+
+### Environment variables
+
+Set these in **Project → Settings → Environment Variables**. Do **not** commit `.env.local` — it is already in `.gitignore`.
+
+| Variable | Scope | Notes |
+| --- | --- | --- |
+| `NEXT_PUBLIC_SUPABASE_URL` | Public | Inlined into the client bundle at build time |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Public | RLS-limited; safe to expose |
+| `SUPABASE_SERVICE_ROLE_KEY` | **Secret** | Bypasses RLS. Server-only — admin writes and `google_event_id` persistence |
+| `ADMIN_EMAIL` | Secret | The single email allowed into `/admin` |
+| `OPENAI_API_KEY` | **Secret** | Enables `gpt-4o-mini`; omit to fall back to Gemini |
+| `OPENAI_MODEL` | Secret | Defaults to `gpt-4o-mini` |
+| `GOOGLE_GENERATIVE_AI_API_KEY` | Secret | Fallback provider when no OpenAI key |
+| `GOOGLE_AI_MODEL` | Secret | e.g. `gemini-2.5-flash` |
+| `GOOGLE_CALENDAR_ENABLED` | Secret | `true` only once all three Calendar values are set |
+| `GOOGLE_SERVICE_ACCOUNT_EMAIL` | **Secret** | Service-account address |
+| `GOOGLE_PRIVATE_KEY` | **Secret** | Paste the whole PEM block, newlines included |
+| `GOOGLE_CALENDAR_ID` | Secret | Target calendar ID |
+
+Production behaviour without the optional keys:
+
+- No `SUPABASE_SERVICE_ROLE_KEY` → the admin dashboard still renders (RLS permits reads) in an amber read-only mode, and event create/edit/delete return `503` with setup instructions.
+- No `OPENAI_API_KEY` → chat uses the Gemini fallback, if that key is present. With neither key, `/api/chat` errors.
+- No Calendar values → registrations succeed and simply skip the invite; students see a neutral "Calendar invites are not enabled" note rather than an error.
+
+### After deploying
+
+1. Supabase → **Authentication → URL Configuration**: set the Site URL to your production domain and add it to the redirect allow-list.
+2. Confirm the admin user exists in Supabase Auth and that `ADMIN_EMAIL` matches exactly.
+3. `vercel env ls` to confirm the secret set, then `vercel logs` and exercise `/`, `/login`, `/admin`, and one registration.
+
+---
+
 ## Architecture
 
 ```

@@ -72,7 +72,7 @@ export default async function EventDetailPage({ params }: { params: { id: string
         </nav>
 
         <article className="glass-card neon-ring overflow-hidden">
-          {/* Neon banner */}
+          
           <div className={`relative overflow-hidden px-6 py-10 sm:px-10 sm:py-12 ${accent.glow}`}>
             <div className={`absolute inset-0 bg-gradient-to-br ${accent.accent} opacity-30`} aria-hidden />
             <div className="absolute inset-0 bg-void-950/70" aria-hidden />
@@ -105,7 +105,7 @@ export default async function EventDetailPage({ params }: { params: { id: string
             </div>
           </div>
 
-          {/* Body */}
+          
           <div className="grid gap-8 p-6 sm:p-10 md:grid-cols-[1fr_300px]">
             <div>
               <h2 className="overline">about this event</h2>
@@ -130,7 +130,7 @@ export default async function EventDetailPage({ params }: { params: { id: string
               </div>
             </div>
 
-            {/* Registration panel */}
+            
             <aside className="h-fit md:sticky md:top-24">
               <div className="glass-strong neon-ring rounded-2xl p-6">
                 <p className="font-display text-4xl font-bold text-glow text-white">{seatsLeft}</p>

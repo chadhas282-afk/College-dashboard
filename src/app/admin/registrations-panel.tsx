@@ -47,7 +47,6 @@ export default function RegistrationsPanel({
         'Registered At',
         'Calendar Invite Sent',
       ];
-      // Neutralize CSV formula injection and escape embedded quotes.
       const escape = (v: unknown) => {
         const s = String(v ?? '');
         const safe = /^[=+\-@\t\r]/.test(s) ? `'${s}` : s;
@@ -67,7 +66,6 @@ export default function RegistrationsPanel({
           .map(escape)
           .join(',')
       );
-      // BOM keeps Excel from mangling UTF-8 names.
       const csv = '\uFEFF' + [headers.map(escape).join(','), ...rows].join('\r\n');
       const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
       const url = URL.createObjectURL(blob);

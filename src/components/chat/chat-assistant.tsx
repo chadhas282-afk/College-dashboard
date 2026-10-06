@@ -31,7 +31,7 @@ export default function ChatAssistant() {
 
   return (
     <>
-      {/* Floating action button */}
+      
       <button
         type="button"
         onClick={toggle}
@@ -69,7 +69,7 @@ export default function ChatAssistant() {
                      w-auto flex-col overflow-hidden rounded-2xl shadow-glass
                      sm:inset-x-auto sm:right-6 sm:w-[400px]"
         >
-          {/* Header */}
+          
           <div className="relative overflow-hidden border-b border-white/10 bg-gradient-to-r from-cyan-500/15 via-indigo-500/10 to-fuchsia-500/15 px-4 py-3.5">
             <div className="flex items-center gap-3">
               <span
@@ -103,7 +103,7 @@ export default function ChatAssistant() {
             />
           </div>
 
-          {/* Messages */}
+          
           <div
             ref={scrollRef}
             className="nice-scroll flex-1 space-y-4 overflow-y-auto px-4 py-4"
@@ -169,7 +169,7 @@ export default function ChatAssistant() {
             )}
           </div>
 
-          {/* Input */}
+          
           <form onSubmit={handleSubmit} className="border-t border-white/10 bg-void-950/50 p-3">
             <div className="flex items-end gap-2">
               <textarea

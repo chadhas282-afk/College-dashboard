@@ -27,11 +27,6 @@ interface RegisterRpcResult {
   student_id?: string;
 }
 
-/**
- * Shared registration pipeline used by both the UI form and the AI agent.
- * 1. Calls the atomic RPC (handles upsert-student, capacity, duplicates).
- * 2. On success, creates a Google Calendar invite with the student as attendee.
- */
 export async function registerStudent({
   email,
   fullName,
@@ -43,8 +38,6 @@ export async function registerStudent({
     return { success: false, error: 'INVALID_INPUT', message: 'A valid email and event are required.' };
   }
 
-  // Public path: the SECURITY DEFINER RPC handles student upsert, capacity
-  // and duplicates atomically — no service role needed.
   const supabase = createAnonClient();
 
   const { data: rpcData, error } = await supabase.rpc('register_student_for_event', {
@@ -75,10 +68,6 @@ export async function registerStudent({
     };
   }
 
-  // Best-effort calendar invite — never block registration on it.
-  // Calls createCalendarInvite() directly rather than POSTing to
-  // /api/calendar/add-event: same handler the route exposes for external
-  // callers, minus an HTTP round-trip back into this app.
   let calendar: RegisterStudentResult['calendar'] = { created: false };
   try {
     const { data: event } = await supabase
@@ -89,7 +78,7 @@ export async function registerStudent({
 
     if (event) {
       const start = new Date(event.event_date);
-      const end = new Date(start.getTime() + 2 * 60 * 60 * 1000); // assume 2h duration
+      const end = new Date(start.getTime() + 2 * 60 * 60 * 1000);
 
       const invite = await createCalendarInvite({
         eventTitle: event.title,
@@ -103,7 +92,6 @@ export async function registerStudent({
 
       calendar = invite;
       if (invite.created && invite.google_event_id && hasServiceRoleKey()) {
-        // Persisting google_event_id is an RLS-protected write — service role only.
         await createAdminClient()
           .from('registrations')
           .update({ google_event_id: invite.google_event_id })

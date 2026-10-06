@@ -22,7 +22,6 @@ export default async function EventsPage({
 
   const supabase = createClient();
 
-  // One round trip: catalog + live registered counts, restricted to upcoming events.
   const { data, error } = await supabase
     .from('events')
     .select('*, registrations(count)')
@@ -57,7 +56,6 @@ export default async function EventsPage({
     <div className="min-h-screen">
       <SiteHeader />
 
-      {/* Hero */}
       <header className="relative overflow-hidden border-b border-white/10">
         <div
           className="absolute inset-0 bg-gradient-to-br from-indigo-950/70 via-void-900 to-cyan-950/40"
@@ -65,7 +63,6 @@ export default async function EventsPage({
         />
         <div className="absolute inset-0 bg-grid-bright bg-grid opacity-40" aria-hidden />
 
-        {/* Sun/arc horizon motif — retro futurism */}
         <div
           className="absolute -bottom-40 left-1/2 h-80 w-[46rem] -translate-x-1/2 rounded-[100%] bg-gradient-to-t from-fuchsia-500/25 via-indigo-500/15 to-transparent blur-2xl"
           aria-hidden
@@ -108,7 +105,6 @@ export default async function EventsPage({
         </div>
       </header>
 
-      {/* Filters + grid */}
       <main id="events" className="mx-auto max-w-6xl scroll-mt-24 px-4 pb-24 sm:px-6">
         <div className="-mt-7">
           <EventFilters initialQuery={q} initialCategory={category} />

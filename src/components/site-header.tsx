@@ -3,7 +3,7 @@ import Link from 'next/link';
 export default function SiteHeader() {
   return (
     <header className="sticky top-0 z-40 border-b border-white/10 bg-void-950/70 backdrop-blur-xl">
-      {/* Neon hairline along the bottom edge */}
+      
       <div
         className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-cyan-400/50 to-transparent"
         aria-hidden

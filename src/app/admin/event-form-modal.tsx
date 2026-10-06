@@ -18,7 +18,6 @@ export default function EventFormModal({
 
   const defaultDate = toDatetimeLocal(new Date(Date.now() + 7 * 24 * 60 * 60 * 1000));
 
-  // Escape closes the modal — expected for a dialog overlay.
   useEffect(() => {
     function onKey(e: KeyboardEvent) {
       if (e.key === 'Escape') onClose();

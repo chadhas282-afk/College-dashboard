@@ -36,8 +36,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       className={`${inter.variable} ${spaceGrotesk.variable} ${jetbrainsMono.variable}`}
     >
       <body className="font-sans">
-        {/* Ambient retro-futurist backdrop: grid + drifting light blobs + a
-            slow scanline sweep. All decorative and pointer-events-none. */}
+        
         <div className="pointer-events-none fixed inset-0 -z-10 overflow-hidden" aria-hidden>
           <div className="absolute inset-0 bg-grid-faint bg-grid" />
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_55%,rgb(4_6_15/0.85)_100%)]" />

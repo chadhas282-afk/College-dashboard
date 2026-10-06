@@ -1,11 +1,6 @@
 import { createClient as createSupabaseClient } from '@supabase/supabase-js';
 import type { Database } from '@/types/database';
 
-/**
- * Cookieless anon-key client for server-side operations that only need
- * public/RLS-scoped access (event catalog reads, the SECURITY DEFINER
- * registration RPC). No session cookies required.
- */
 export function createAnonClient() {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;

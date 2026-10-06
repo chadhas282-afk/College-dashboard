@@ -1,11 +1,5 @@
--- ═══════════════════════════════════════════════════════════════════════
--- College Event Hub — schema, security, and seed data
--- Run in Supabase SQL Editor (or `supabase db push`).
--- ═══════════════════════════════════════════════════════════════════════
 
 create extension if not exists "pgcrypto";
-
--- ── Tables ─────────────────────────────────────────────────────────────
 
 create table if not exists public.students (
   id            uuid primary key default gen_random_uuid(),
@@ -41,10 +35,6 @@ create index if not exists idx_registrations_student on public.registrations (st
 create index if not exists idx_events_date on public.events (event_date);
 create index if not exists idx_students_email on public.students (lower(email));
 
--- ── Atomic registration function ───────────────────────────────────────
--- Enforces capacity and the one-registration-per-student rule inside a
--- single SQL statement, so two concurrent requests can never overbook.
-
 create or replace function public.register_student_for_event(
   p_email       text,
   p_event_id    uuid,
@@ -63,7 +53,6 @@ declare
   v_taken     int;
   v_reg       public.registrations;
 begin
-  -- Resolve or create the student by email
   select * into v_student from public.students where lower(email) = lower(p_email);
   if not found then
     insert into public.students (full_name, email, department, year_of_study)
@@ -73,8 +62,6 @@ begin
     )
     returning * into v_student;
   end if;
-
-  -- Lock the event row so capacity checks serialize
   select * into v_event from public.events where id = p_event_id for update;
   if not found then
     raise exception 'Event not found';
@@ -102,11 +89,6 @@ begin
 end;
 $$;
 
--- ── Row Level Security ─────────────────────────────────────────────────
--- Anonymous + authenticated users may read the catalog and register via
--- the SECURITY DEFINER function. Writes to tables happen only through the
--- service role key (server routes), which bypasses RLS.
-
 alter table public.students      enable row level security;
 alter table public.events        enable row level security;
 alter table public.registrations enable row level security;
@@ -126,8 +108,6 @@ create policy "public read registrations" on public.registrations
 drop policy if exists "anon can register via rpc" on public.registrations;
 create policy "anon can register via rpc" on public.registrations
   for insert to anon, authenticated with check (true);
-
--- ── Seed data: 5 realistic college events ──────────────────────────────
 
 insert into public.events (title, description, category, event_date, location, capacity)
 values

@@ -34,7 +34,7 @@
     @apply font-display tracking-tight;
   }
 
-  /* Neon scrollbar to match the shell */
+  
   ::-webkit-scrollbar {
     width: 10px;
     height: 10px;
@@ -51,7 +51,7 @@
 }
 
 @layer components {
-  /* ── Glass surfaces ──────────────────────────────────────────────── */
+  
   .glass {
     @apply border border-white/10 bg-white/[0.04] backdrop-blur-xl;
   }
@@ -62,8 +62,7 @@
     @apply glass rounded-2xl shadow-glass;
   }
 
-  /* Gradient hairline border, drawn with a masked pseudo-element so the
-     neon edge glows without tinting the panel background. */
+  
   .neon-ring {
     @apply relative;
   }
@@ -90,7 +89,7 @@
     opacity: 1;
   }
 
-  /* Animated conic border for hero / featured accents */
+  
   .ring-conic {
     position: relative;
   }
@@ -118,7 +117,7 @@
     inherits: false;
   }
 
-  /* ── Type effects ─────────────────────────────────────────────────── */
+  
   .text-glow {
     text-shadow:
       0 0 18px rgb(34 211 238 / 0.55),
@@ -144,7 +143,7 @@
     @apply font-mono text-[11px] font-medium uppercase tracking-[0.18em] text-slate-400;
   }
 
-  /* ── Buttons ──────────────────────────────────────────────────────── */
+  
   .btn {
     @apply inline-flex items-center justify-center gap-2 rounded-xl text-sm font-semibold
            transition duration-200 disabled:cursor-not-allowed disabled:opacity-50;
@@ -156,7 +155,7 @@
     @apply px-3 py-1.5 text-xs;
   }
 
-  /* Primary: neon cyan with a real bloom */
+  
   .btn-primary {
     @apply btn bg-cyan-400/90 font-semibold text-void-950 shadow-neon-sm
            hover:bg-cyan-300 hover:shadow-neon active:scale-[0.97];
@@ -173,7 +172,7 @@
            hover:border-rose-400/70 hover:bg-rose-500/25 hover:text-white active:scale-[0.97];
   }
 
-  /* ── Form fields ─────────────────────────────────────────────────── */
+  
   .field {
     @apply w-full rounded-xl border border-white/10 bg-void-900/60 px-3.5 py-2.5 text-sm
            text-white outline-none transition placeholder:text-slate-500
@@ -183,7 +182,7 @@
     @apply mb-1.5 block text-xs font-medium text-slate-300;
   }
 
-  /* ── Surfaces ────────────────────────────────────────────────────── */
+  
   .card {
     @apply glass-card;
   }
@@ -191,7 +190,7 @@
     @apply card p-5;
   }
 
-  /* ── Status chips ────────────────────────────────────────────────── */
+  
   .chip {
     @apply inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] font-semibold ring-1;
   }

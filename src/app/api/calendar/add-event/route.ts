@@ -9,26 +9,18 @@ interface AddEventBody {
   title: string;
   description?: string | null;
   location?: string | null;
-  start: string; // ISO datetime
-  end?: string; // ISO datetime (defaults to start + 2h)
+  start: string;
+  end?: string;
   attendee_email: string;
   attendee_name?: string;
 }
 
-/**
- * Without a guard this endpoint would be an open relay: anyone could make the
- * service account email an invite to an arbitrary address. So a request is
- * allowed only when it either comes from an admin session or corresponds to a
- * registration that actually exists in the database.
- */
 async function authorize(body: AddEventBody): Promise<NextResponse | null> {
   const adminSession = await getAdminSession().catch(() => null);
   if (adminSession) return null;
 
   const email = body.attendee_email.toLowerCase();
   const supabase = createAnonClient();
-  // Filter on the embedded resource in JS: relying on `.eq('student.email', …)`
-  // returns rows with a null embed rather than a clean filtered set.
   const { data, error } = await supabase
     .from('registrations')
     .select('id, student: students ( email ), event: events ( title, event_date )')

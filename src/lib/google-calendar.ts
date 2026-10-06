@@ -14,11 +14,6 @@ interface CalendarInviteResult {
   created: boolean;
   google_event_id?: string;
   error?: string;
-  /**
-   * True when the invite was skipped because credentials aren't configured.
-   * Distinct from `error`: nothing failed, there is just nothing to send, so
-   * callers must not surface this to students as a failure.
-   */
   skipped?: boolean;
 }
 
@@ -31,11 +26,6 @@ export function isGoogleCalendarConfigured(): boolean {
   );
 }
 
-/**
- * Creates a Google Calendar event with the student as an attendee. Google
- * sends the invite email to the attendee automatically when the event is
- * created on a calendar the service account owns.
- */
 export async function createCalendarInvite(
   input: CalendarInviteInput
 ): Promise<CalendarInviteResult> {
@@ -46,7 +36,6 @@ export async function createCalendarInvite(
   try {
     const auth = new google.auth.JWT({
       email: process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL,
-      // Private keys in env vars have literal \n; restore real newlines.
       key: process.env.GOOGLE_PRIVATE_KEY!.replace(/\\n/g, '\n'),
       scopes: ['https://www.googleapis.com/auth/calendar'],
     });
@@ -70,7 +59,6 @@ export async function createCalendarInvite(
           ],
         },
       },
-      // Makes Google email the .ics invite to attendees
       sendUpdates: 'all',
     });
 
@@ -82,7 +70,6 @@ export async function createCalendarInvite(
   }
 }
 
-/** Deletes a previously created calendar event (e.g. on cancellation). */
 export async function deleteCalendarInvite(googleEventId: string): Promise<boolean> {
   if (!isGoogleCalendarConfigured()) return false;
 
