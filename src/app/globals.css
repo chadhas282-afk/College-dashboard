@@ -1,0 +1,209 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    color-scheme: dark;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-void-950 font-sans text-slate-200 antialiased;
+    background-image:
+      radial-gradient(ellipse 80% 50% at 50% -10%, rgb(99 102 241 / 0.18), transparent),
+      radial-gradient(ellipse 60% 40% at 90% 10%, rgb(34 211 238 / 0.10), transparent),
+      radial-gradient(ellipse 60% 40% at 10% 20%, rgb(240 171 252 / 0.08), transparent);
+    background-attachment: fixed;
+  }
+
+  ::selection {
+    @apply bg-cyan-400/30 text-white;
+  }
+
+  :focus-visible {
+    @apply outline-none ring-2 ring-neon-cyan ring-offset-2 ring-offset-void-950;
+  }
+
+  h1,
+  h2,
+  h3 {
+    @apply font-display tracking-tight;
+  }
+
+  /* Neon scrollbar to match the shell */
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: rgb(7 11 26);
+  }
+  ::-webkit-scrollbar-thumb {
+    @apply rounded-full bg-slate-700/70;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-cyan-500/60;
+  }
+}
+
+@layer components {
+  /* ── Glass surfaces ──────────────────────────────────────────────── */
+  .glass {
+    @apply border border-white/10 bg-white/[0.04] backdrop-blur-xl;
+  }
+  .glass-strong {
+    @apply border border-white/15 bg-white/[0.07] backdrop-blur-2xl;
+  }
+  .glass-card {
+    @apply glass rounded-2xl shadow-glass;
+  }
+
+  /* Gradient hairline border, drawn with a masked pseudo-element so the
+     neon edge glows without tinting the panel background. */
+  .neon-ring {
+    @apply relative;
+  }
+  .neon-ring::before {
+    content: '';
+    @apply pointer-events-none absolute -inset-px rounded-[inherit];
+    background: linear-gradient(
+      135deg,
+      rgb(34 211 238 / 0.7),
+      rgb(167 139 250 / 0.55),
+      rgb(240 171 252 / 0.6),
+      rgb(34 211 238 / 0.7)
+    );
+    -webkit-mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    padding: 1px;
+    opacity: 0.55;
+    transition: opacity 0.25s ease;
+  }
+  .neon-ring:hover::before {
+    opacity: 1;
+  }
+
+  /* Animated conic border for hero / featured accents */
+  .ring-conic {
+    position: relative;
+  }
+  .ring-conic::before {
+    content: '';
+    @apply pointer-events-none absolute -inset-px rounded-[inherit] opacity-60;
+    background: conic-gradient(
+      from var(--angle, 0deg),
+      rgb(34 211 238),
+      rgb(167 139 250),
+      rgb(240 171 252),
+      rgb(34 211 238)
+    );
+    -webkit-mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    padding: 1px;
+    animation: border-spin 6s linear infinite;
+  }
+  @property --angle {
+    syntax: '<angle>';
+    initial-value: 0deg;
+    inherits: false;
+  }
+
+  /* ── Type effects ─────────────────────────────────────────────────── */
+  .text-glow {
+    text-shadow:
+      0 0 18px rgb(34 211 238 / 0.55),
+      0 0 42px rgb(99 102 241 / 0.35);
+  }
+  .text-glow-magenta {
+    text-shadow:
+      0 0 18px rgb(240 171 252 / 0.6),
+      0 0 40px rgb(236 72 153 / 0.3);
+  }
+  .neon-text-gradient {
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(
+      100deg,
+      #67e8f9 0%,
+      #a5b4fc 35%,
+      #f0abfc 65%,
+      #67e8f9 100%
+    );
+    background-size: 200% auto;
+  }
+  .overline {
+    @apply font-mono text-[11px] font-medium uppercase tracking-[0.18em] text-slate-400;
+  }
+
+  /* ── Buttons ──────────────────────────────────────────────────────── */
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl text-sm font-semibold
+           transition duration-200 disabled:cursor-not-allowed disabled:opacity-50;
+  }
+  .btn-md {
+    @apply px-4 py-2.5;
+  }
+  .btn-sm {
+    @apply px-3 py-1.5 text-xs;
+  }
+
+  /* Primary: neon cyan with a real bloom */
+  .btn-primary {
+    @apply btn bg-cyan-400/90 font-semibold text-void-950 shadow-neon-sm
+           hover:bg-cyan-300 hover:shadow-neon active:scale-[0.97];
+  }
+  .btn-secondary {
+    @apply btn glass-strong text-slate-100 hover:border-cyan-400/50 hover:bg-white/10
+           hover:text-white active:scale-[0.97];
+  }
+  .btn-ghost {
+    @apply btn text-slate-300 hover:bg-white/[0.07] hover:text-white active:scale-[0.97];
+  }
+  .btn-danger {
+    @apply btn border border-rose-500/40 bg-rose-500/15 text-rose-200
+           hover:border-rose-400/70 hover:bg-rose-500/25 hover:text-white active:scale-[0.97];
+  }
+
+  /* ── Form fields ─────────────────────────────────────────────────── */
+  .field {
+    @apply w-full rounded-xl border border-white/10 bg-void-900/60 px-3.5 py-2.5 text-sm
+           text-white outline-none transition placeholder:text-slate-500
+           focus:border-cyan-400/70 focus:bg-void-900/90 focus:shadow-neon-sm;
+  }
+  .field-label {
+    @apply mb-1.5 block text-xs font-medium text-slate-300;
+  }
+
+  /* ── Surfaces ────────────────────────────────────────────────────── */
+  .card {
+    @apply glass-card;
+  }
+  .panel {
+    @apply card p-5;
+  }
+
+  /* ── Status chips ────────────────────────────────────────────────── */
+  .chip {
+    @apply inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] font-semibold ring-1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
